@@ -12,8 +12,11 @@
 <title>JBlog</title>
 <Link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/jblog.css">
+<link rel="stylesheet"
+	href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript"
 	src="${pageContext.servletContext.contextPath }/assets/js/jquery/jquery-1.9.0.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 	var no = 0;
 	var categoryNo = 0;
@@ -35,6 +38,18 @@
 			$(".admin-cat").prepend(htmls);
 		}
 
+	}
+	var messageBox = function(title, message){
+		$("#dialog-message").attr("title", title);
+		$("#dialog-message p").text(message);
+		$("#dialog-message").dialog({
+			modal: true, // true = doModalDialog / false = modalDialog
+			buttons: {
+				"확인": function() {
+					$(this).dialog("close");
+				}
+			}
+		});
 	}
 	$(function() {
 		$.ajax({
@@ -65,20 +80,19 @@
 
 		$(".admin-cat-form").submit(
 				function(event) {
+
 					event.preventDefault();
 
 					var name = $("#name").val();
 					var description = $("#description").val();
 
 					if (name == "") {
-						alert("이름은 필수항목입니다.");
-						$(name).focus();
-						return false;
+						messageBox("카테고리 추가", "카테고리의 이름은 필수 항목입니다.");
+						return;
 					}
 					if (description == "") {
-						alert("설명은 필수항목입니다.");
-						$(description).focus();
-						return false;
+						messageBox("카테고리 추가", "카테고리의 설명은 필수항목입니다.");
+						return;
 					}
 
 					$.ajax({
@@ -172,6 +186,10 @@
 						</tr>
 					</table>
 				</form>
+			</div>
+			<div id="dialog-message" title="" style="display: none">
+				<br>
+				<p></p>
 			</div>
 		</div>
 		<div id="footer">
