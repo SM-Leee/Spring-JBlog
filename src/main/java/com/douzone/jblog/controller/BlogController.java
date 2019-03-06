@@ -24,6 +24,7 @@ import com.douzone.jblog.service.FileuploadService;
 import com.douzone.jblog.service.UserService;
 import com.douzone.jblog.vo.BlogVo;
 import com.douzone.jblog.vo.CategoryVo;
+import com.douzone.jblog.vo.CommentVo;
 import com.douzone.jblog.vo.PostVo;
 import com.douzone.jblog.vo.UserVo;
 import com.douzone.security.AuthUser;
@@ -169,6 +170,31 @@ public class BlogController {
 		
 		return JSONResult.success(blogService.delete(no));
 		
+	}
+	
+	@RequestMapping(value="/{category_no}/{post_no}/comment/insert", method=RequestMethod.POST)
+	public String commentInsert(
+			@PathVariable("id") String id,
+			@PathVariable("category_no") long category_no,
+			@PathVariable("post_no") long post_no,
+			@ModelAttribute CommentVo commentVo,
+			Model model) {
+
+		blogService.insertComment(commentVo);
+		return "redirect:/"+id+"/"+category_no+"/"+post_no;
+	}
+	
+	@RequestMapping(value="/{category_no}/{post_no}/{comment_no}/comment/delete")
+	public String commentDelete(
+			@PathVariable("id") String id,
+			@PathVariable("category_no") long category_no,
+			@PathVariable("post_no") long post_no,
+			@PathVariable("comment_no") long comment_no,
+			@ModelAttribute CommentVo commentVo,
+			Model model) {
+		
+		blogService.deleteComment(comment_no);
+		return "redirect:/"+id+"/"+category_no+"/"+post_no;
 	}
 
 }

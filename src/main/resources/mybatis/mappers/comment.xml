@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="comment">
+	<select id="getListComment" parameterType="long" resultType="commentvo">
+		<![CDATA[
+			select * from comment where post_no = #{post_no} order by no asc
+		]]>
+	</select>
+	
+	<insert id="insertComment" parameterType="commentvo">
+		<![CDATA[
+			insert into comment values(null, #{content}, now(),#{post_no})
+		]]>
+	</insert>
+	
+	<delete id="deleteComment" parameterType="long">
+		<![CDATA[
+			delete from comment where no = #{no }
+		]]>
+	</delete>
+</mapper>

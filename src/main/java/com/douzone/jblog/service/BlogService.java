@@ -1,5 +1,6 @@
 package com.douzone.jblog.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale.Category;
@@ -11,10 +12,12 @@ import org.springframework.stereotype.Service;
 
 import com.douzone.jblog.repository.BlogDao;
 import com.douzone.jblog.repository.CategoryDao;
+import com.douzone.jblog.repository.CommentDao;
 import com.douzone.jblog.repository.PostDao;
 import com.douzone.jblog.repository.UserDao;
 import com.douzone.jblog.vo.BlogVo;
 import com.douzone.jblog.vo.CategoryVo;
+import com.douzone.jblog.vo.CommentVo;
 import com.douzone.jblog.vo.PostVo;
 import com.douzone.jblog.vo.UserVo;
 
@@ -29,6 +32,8 @@ public class BlogService {
 	private CategoryDao categoryDao;
 	@Autowired
 	private PostDao postDao;
+	@Autowired
+	private CommentDao commentDao;
 
 	public Map<String, Object> getAll(String id, long category_no, long post_no) {
 		long user_no = userDao.idCheck(id).getNo();
@@ -43,18 +48,21 @@ public class BlogService {
 		List<PostVo> postList = postDao.postTitleList(user_no,category_no);
 
 		PostVo postVo = new PostVo();
+		List<CommentVo> commentList = new ArrayList<CommentVo>();
 		if(postList.size() != 0 ) {
 			if(post_no == 0) {
 				post_no = postDao.postMin(category_no);
 			}
 
-			postVo = postDao.getPost(post_no);				
+			postVo = postDao.getPost(post_no);
+			commentList = commentDao.getListComment(post_no);
 		}
 		map.put("userVo", userDao.idCheck(id));
 		map.put("blogVo", blogVo);
 		map.put("categoryList", categoryList);
 		map.put("postList", postList);
 		map.put("postVo", postVo);
+		map.put("commentList", commentList);
 
 		return map;
 	}
@@ -94,6 +102,14 @@ public class BlogService {
 
 	public boolean delete(long no) {
 		return categoryDao.delete(no);
+	}
+	
+	public void insertComment(CommentVo commentVo) {
+		commentDao.insertComment(commentVo);
+	}
+	
+	public void deleteComment(long comment_no) {
+		commentDao.deleteComment(comment_no);
 	}
 
 }

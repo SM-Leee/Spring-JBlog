@@ -24,6 +24,37 @@
 					<p>${postVo.content}
 					<p>
 				</div>
+				<c:choose>
+					<c:when test="${empty postList}">
+
+					</c:when>
+					<c:otherwise>
+						<table class="tbl-ex">
+							<c:forEach items="${commentList }" var="vo" varStatus="status">
+								<tr>
+									<td style="width: 95%"><img style="padding-left: 10px;"
+										src="${pageContext.request.contextPath}/assets/images/reply.png">
+										${vo.content}</td>
+									<td><a href="${pageContext.request.contextPath}/${userVo.id}/${postVo.category_no }/${postVo.no }/${vo.no}/comment/delete">
+									<img src="${pageContext.request.contextPath}/assets/images/delete.jpg"></a>
+									</td>
+								</tr>
+							</c:forEach>
+						</table>
+
+						<form class="board-form" method="post"
+							action="${pageContext.request.contextPath}/${userVo.id}/${postVo.category_no }/${postVo.no }/comment/insert">
+							<table class="tbl-ex">
+								<tr class="tr-ex">
+									<td class="label">댓글</td>
+									<td><input type="text" name="content" value=""></td>
+									<td><input type="submit" value="댓글"></td>
+								</tr>
+							</table>
+						</form>
+					</c:otherwise>
+				</c:choose>
+
 				<ul class="blog-list">
 					<c:forEach items="${postList }" var="vo" varStatus="status">
 						<li><a
@@ -32,12 +63,14 @@
 					</c:forEach>
 				</ul>
 			</div>
+
 		</div>
 
 		<div id="extra">
 			<div class="blog-logo">
-				<img onerror="this.src='${pageContext.request.contextPath }/assets/images/default_profile.png'"
-				src="${pageContext.request.contextPath}/assets${blogVo.logo}">
+				<img
+					onerror="this.src='${pageContext.request.contextPath }/assets/images/default_profile.png'"
+					src="${pageContext.request.contextPath}/assets${blogVo.logo}">
 				<%-- <img src="${pageContext.request.contextPath }/assets/images/default_profile.png"> --%>
 			</div>
 		</div>

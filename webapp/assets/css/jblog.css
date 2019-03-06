@@ -124,5 +124,49 @@ div#extra .blog-logo img	{ width:150px }
 div#footer		{ background:#F0F0F0; color:#666 }
 div#footer p	{ text-align:center; margin:0; padding:8px 10px }
 
+/* comment */
+.board-form {
+	margin-top:30px
+}
 
+.tbl-ex		{
+	width:80%; 
+	border-collapse:collapse;
+}
+
+.tbl-ex th, 
+.tbl-ex td	{ 
+	padding:8px; 	 
+}
+	
+.tbl-ex th	{ 
+	border-top:2px solid #333;
+	border-bottom:2px solid #333; 
+	background-color:#999; 
+	font-size:1.1em; 
+	color:#fff 
+}
+
+
+.tbl-ex .tr-ex {
+	border-top:1px dotted #333;
+	border-bottom:1px solid #333;
+}
+
+.board-form .tbl-ex td {
+	text-align:left
+}
+
+.board-form .tbl-ex td.label {
+	text-align:right;
+	font-weight:bold;
+	width:30px; 
+}
+
+.board-form .tbl-ex input[ name='title' ] {
+	width: 480px;
+}
+.tbl-ex input[ name='content' ] {
+	width: 380px;
+}
 
