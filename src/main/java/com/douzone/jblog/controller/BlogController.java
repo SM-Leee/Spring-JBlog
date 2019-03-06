@@ -112,7 +112,8 @@ public class BlogController {
 		if(authuser == null) {
 			return "user/login";
 		}
-		blogService.insertPost(postVo);
+		BlogVo blogVo = blogService.get(id);
+		blogService.insertPost(postVo, blogVo.getUser_no());
 		return "redirect:/"+id;
 	}
 	

@@ -1,12 +1,15 @@
 package com.douzone.jblog.repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.douzone.jblog.vo.CategoryVo;
+import com.douzone.jblog.vo.PostVo;
 
 @Repository
 public class CategoryDao {
@@ -22,8 +25,14 @@ public class CategoryDao {
 		return sqlSession.selectOne("category.selectmin", user_no);
 	}
 	
-	public long categoryName(String name) {
-		return sqlSession.selectOne("category.getNo", name);
+	public long categoryName(String category, long user_no) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("category", category);
+		map.put("user_no", user_no);
+		long no = sqlSession.selectOne("category.getNo", map);
+		
+		return no;
 		
 	}
 	

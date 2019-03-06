@@ -15,9 +15,9 @@
 		
 	</select>
 	
-	<select id="getNo" parameterType="string" resultType="long">
+	<select id="getNo" parameterType="map" resultType="long">
 		<![CDATA[
-			select no from category where name=#{name }
+			select no from category where name=#{category } and user_no = #{user_no}
 		]]>
 	</select>
 	

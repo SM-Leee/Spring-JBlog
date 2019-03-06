@@ -84,8 +84,9 @@ public class BlogService {
 		return categoryDao.categoryList(user_no);
 	}
 
-	public int insertPost(PostVo postVo) {
-		postVo.setCategory_no(categoryDao.categoryName(postVo.getCategory()));
+	public int insertPost(PostVo postVo, long user_no) {
+		//System.out.println(categoryDao.categoryName(postVo));
+		postVo.setCategory_no(categoryDao.categoryName(postVo.getCategory(), user_no));
 		return postDao.insertPost(postVo);
 
 
