@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="post">
+
+	<select id="listTitleAndDate" parameterType="map" resultType="postvo">
+		<![CDATA[
+			select b.*
+				from category a, post b
+    			where a.no = b.category_no 
+    				and a.user_no = #{user_no} and b.category_no=#{category_no}
+		]]>
+	</select>
+
+	<select id="postMin" parameterType="long" resultType="long">
+		<![CDATA[
+			select min(no) as post_no from post where category_no=#{category_no }
+		]]>	
+	</select>
+	
+	<select id="getPost" parameterType="long" resultType="postvo">
+		<![CDATA[
+			select * from post where no = #{post_no}
+		]]>
+	</select>
+	
+	<insert id="insertPost" parameterType="postvo">
+		<![CDATA[
+			insert into post values(null, #{title}, #{content}, now(),#{category_no})
+		]]>
+	</insert>
+</mapper>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- auto proxy -->
+	<aop:aspectj-autoproxy />
+
+	<!-- validator, conversionService, messageConverter 를 자동으로 등록 -->
+	<mvc:annotation-driven>
+
+		<!-- message Converter -->
+		<mvc:message-converters>
+			<bean
+				class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html; charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json; charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+
+		</mvc:message-converters>
+
+		<!-- Controller의 Handler의 Argument Resolver 등록 -->
+		<mvc:argument-resolvers>
+			<bean
+				class="com.douzone.security.AuthUserHandlerMethodArgumentResolver" />
+		</mvc:argument-resolvers>
+	</mvc:annotation-driven>
+
+	<!-- the mvc resources mapping url -->
+	<mvc:resources mapping="/assets/uploads/images/**"
+		location="file:/uploads/" />
+
+	<!-- 서블릿 컨테이너의 디폴트 서블릿 위임 핸들러 -->
+	<mvc:default-servlet-handler />
+
+	<!-- Interceptors -->
+	<mvc:interceptors>
+		<!-- MyIntercetor01 -->
+		<!-- <mvc:interceptor> <mvc:mapping path="/guestbook/**" /> <bean class="com.douzone.mysite.interceptor.MyInterceptor02" 
+			/> </mvc:interceptor> -->
+
+		<!-- AuthLoginInterceptor -->
+		<mvc:interceptor>
+			<mvc:mapping path="/user/auth" />
+			<bean class="com.douzone.security.AuthLoginInterceptor" />
+		</mvc:interceptor>
+		<!-- AuthLogoutInterceptor -->
+		<mvc:interceptor>
+			<mvc:mapping path="/user/logout" />
+			<bean class="com.douzone.security.AuthLogoutInterceptor" />
+		</mvc:interceptor>
+		<!-- AuthInterceptor -->
+		<!-- <mvc:interceptor> <mvc:mapping path="/**" /> <mvc:exclude-mapping 
+			path="/user/auth" /> <mvc:exclude-mapping path="/user/logout" /> <mvc:exclude-mapping 
+			path="/assets/**" /> <bean class="com.douzone.security.AuthInterceptor" /> 
+			</mvc:interceptor> -->
+	</mvc:interceptors>
+
+
+	<!-- annotation 설정 -->
+	<context:annotation-config />
+	<context:component-scan
+		base-package="com.douzone.jblog.controller" />
+
+	<!-- 기본 뷰 이름 설정 (ViewResolver 설정) -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/views/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="1" />
+	</bean>
+
+	<!-- 멀티파트 리졸버 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 최대업로드 가능한 바이트크기 -->
+		<property name="maxUploadSize" value="52428800" />
+		<!-- 디스크에 임시 파일을 생성하기 전에 메모리에 보관할수있는 최대 바이트 크기 -->
+		<!-- property name="maxInMemorySize" value="52428800" / -->
+		<!-- defaultEncoding -->
+		<property name="defaultEncoding" value="utf-8" />
+	</bean>
+
+	<!-- MessageSource -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>messages/messages_ko</value>
+			</list>
+		</property>
+	</bean>
+
+
+</beans>

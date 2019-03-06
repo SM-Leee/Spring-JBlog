@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blog">
+		
+	<select id="blogcheck" parameterType="long" resultType="blogvo">
+		<![CDATA[
+			select * from blog where user_no = #{user_no}
+		]]>
+	</select>
+	
+	<insert id="blogcreate" parameterType="long">
+		<![CDATA[
+			insert into blog values(#{user_no}, 'default', 'logo를 등록해주세요.')
+		]]>
+	</insert>
+	
+	<update id="blogupdate" parameterType="blogvo">
+		<![CDATA[
+			update blog set title=#{title }, logo=#{logo } where user_no=#{user_no}
+		]]>
+	</update>
+	
+</mapper>
