@@ -112,7 +112,7 @@
 
 
 			<label class="block-label" for="password">패스워드</label>
-			<form:input path="password" />
+			<form:input path="password" type="password" />
 			<p
 				style="margin: 0; padding: 0; font-weight: bold; color: red; text-align: left;">
 				<form:errors path="password" />
